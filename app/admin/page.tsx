@@ -1,12 +1,12 @@
-import { PosLayout } from "@/components/pos/pos-layout"
+import { AdminDashboard } from "@/components/admin/admin-dashboard"
 import { NavBar } from "@/components/navigation/nav-bar"
 
-export default function HomePage() {
+export default function AdminPage() {
   return (
     <div className="min-h-screen bg-background">
       <NavBar />
       <main>
-        <PosLayout />
+        <AdminDashboard />
       </main>
     </div>
   )

@@ -1,12 +1,12 @@
-import { PosLayout } from "@/components/pos/pos-layout"
+import { InventoryDashboard } from "@/components/inventory/inventory-dashboard"
 import { NavBar } from "@/components/navigation/nav-bar"
 
-export default function HomePage() {
+export default function InventoryPage() {
   return (
     <div className="min-h-screen bg-background">
       <NavBar />
       <main>
-        <PosLayout />
+        <InventoryDashboard />
       </main>
     </div>
   )
