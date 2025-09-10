@@ -33,6 +33,7 @@ import {
   useActiveShifts,
   useLowStockAlerts,
 } from "@/lib/api/queries"
+import { LowStockAlert } from "@/lib/types"
 import { SalesChart } from "./sales-chart"
 import { MenuManagement } from "./menu-management"
 import { StaffManagement } from "./staff-management"
@@ -154,7 +155,7 @@ export function AdminDashboard() {
                 <h3 className="font-semibold text-orange-800">System Alerts</h3>
               </div>
               <div className="space-y-2">
-                {alerts.slice(0, 3).map((alert) => (
+                {alerts.slice(0, 3).map((alert: LowStockAlert) => (
                   <div key={alert.id} className="flex justify-between items-center text-sm">
                     <span className="text-orange-700">{alert.itemName} is running low</span>
                     <Badge variant={alert.severity === "out" ? "destructive" : "secondary"}>

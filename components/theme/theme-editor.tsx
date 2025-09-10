@@ -28,19 +28,19 @@ export function ThemeEditor() {
   const [editingTheme, setEditingTheme] = useState<Partial<CafeTheme>>({})
 
   const handleColorChange = (colorKey: keyof CafeTheme["colors"], value: string) => {
-    const updatedColors = { ...editingTheme.colors, [colorKey]: value }
-    const updatedTheme = { ...editingTheme, colors: updatedColors }
+    const updatedColors = { ...(editingTheme.colors || {}), [colorKey]: value }
+    const updatedTheme = { ...editingTheme, colors: updatedColors as CafeTheme["colors"] }
     setEditingTheme(updatedTheme)
     previewTheme(updatedTheme)
   }
 
   const handleBrandingChange = (key: keyof CafeTheme["branding"], value: string) => {
-    const updatedBranding = { ...editingTheme.branding, [key]: value }
-    setEditingTheme({ ...editingTheme, branding: updatedBranding })
+    const updatedBranding = { ...(editingTheme.branding || {}), [key]: value }
+    setEditingTheme({ ...editingTheme, branding: updatedBranding as CafeTheme["branding"] })
   }
 
   const handleSave = () => {
-    if (isCreating) {
+    if (isCreating && currentTheme) {
       const newTheme = createTheme({
         name: editingTheme.name || "New Theme",
         colors: editingTheme.colors || currentTheme.colors,
@@ -67,15 +67,17 @@ export function ThemeEditor() {
   }
 
   const startEditing = () => {
-    setEditingTheme(currentTheme)
-    setIsEditing(true)
+    if (currentTheme) {
+      setEditingTheme(currentTheme)
+      setIsEditing(true)
+    }
   }
 
   const startCreating = () => {
     setEditingTheme({
       name: "",
-      colors: currentTheme.colors,
-      fonts: currentTheme.fonts,
+      colors: currentTheme?.colors,
+      fonts: currentTheme?.fonts,
       branding: { businessName: "", tagline: "" },
     })
     setIsCreating(true)
@@ -111,8 +113,8 @@ export function ThemeEditor() {
       <Card className="p-6">
         <div className="flex justify-between items-start mb-4">
           <div>
-            <h3 className="font-semibold text-lg">{currentTheme.name}</h3>
-            <p className="text-muted-foreground">{currentTheme.branding.tagline}</p>
+            <h3 className="font-semibold text-lg">{currentTheme?.name}</h3>
+            <p className="text-muted-foreground">{currentTheme?.branding?.tagline}</p>
           </div>
           {isPreviewMode && <Badge className="bg-orange-500 text-white">Preview Mode</Badge>}
         </div>
@@ -120,25 +122,25 @@ export function ThemeEditor() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <div>
             <Label className="text-xs text-muted-foreground">Business Name</Label>
-            <p className="font-medium">{currentTheme.branding.businessName}</p>
+            <p className="font-medium">{currentTheme?.branding?.businessName}</p>
           </div>
           <div>
             <Label className="text-xs text-muted-foreground">Primary Color</Label>
             <div className="flex items-center gap-2">
-              <div className="w-4 h-4 rounded border" style={{ backgroundColor: currentTheme.colors.primary }} />
-              <span className="text-sm font-mono">{currentTheme.colors.primary}</span>
+              <div className="w-4 h-4 rounded border" style={{ backgroundColor: currentTheme?.colors?.primary }} />
+              <span className="text-sm font-mono">{currentTheme?.colors?.primary}</span>
             </div>
           </div>
           <div>
             <Label className="text-xs text-muted-foreground">Accent Color</Label>
             <div className="flex items-center gap-2">
-              <div className="w-4 h-4 rounded border" style={{ backgroundColor: currentTheme.colors.accent }} />
-              <span className="text-sm font-mono">{currentTheme.colors.accent}</span>
+              <div className="w-4 h-4 rounded border" style={{ backgroundColor: currentTheme?.colors?.accent }} />
+              <span className="text-sm font-mono">{currentTheme?.colors?.accent}</span>
             </div>
           </div>
           <div>
             <Label className="text-xs text-muted-foreground">Heading Font</Label>
-            <p className="font-medium">{currentTheme.fonts.heading}</p>
+            <p className="font-medium">{currentTheme?.fonts?.heading}</p>
           </div>
         </div>
       </Card>
@@ -151,13 +153,13 @@ export function ThemeEditor() {
             <Card
               key={theme.id}
               className={`p-4 cursor-pointer transition-all hover:shadow-md ${
-                currentTheme.id === theme.id ? "ring-2 ring-accent" : ""
+                currentTheme?.id === theme.id ? "ring-2 ring-accent" : ""
               }`}
               onClick={() => setTheme(theme.id)}
             >
               <div className="flex justify-between items-start mb-3">
                 <h4 className="font-medium">{theme.name}</h4>
-                {currentTheme.id === theme.id && <Badge variant="default">Active</Badge>}
+                {currentTheme?.id === theme.id && <Badge variant="default">Active</Badge>}
               </div>
 
               <p className="text-sm text-muted-foreground mb-3">{theme.branding.businessName}</p>
@@ -238,7 +240,7 @@ export function ThemeEditor() {
             <div className="space-y-4">
               <h4 className="font-medium">Colors</h4>
               <div className="grid grid-cols-2 gap-4">
-                {Object.entries(editingTheme.colors || currentTheme.colors).map(([key, value]) => (
+                {Object.entries(editingTheme.colors || currentTheme?.colors || {}).map(([key, value]) => (
                   <div key={key} className="space-y-2">
                     <Label htmlFor={`color-${key}`} className="capitalize">
                       {key.replace(/([A-Z])/g, " $1").trim()}
@@ -269,15 +271,15 @@ export function ThemeEditor() {
               <Card
                 className="p-4"
                 style={{
-                  backgroundColor: editingTheme.colors?.card || currentTheme.colors.card,
-                  borderColor: editingTheme.colors?.border || currentTheme.colors.border,
-                  color: editingTheme.colors?.foreground || currentTheme.colors.foreground,
+                  backgroundColor: editingTheme.colors?.card || currentTheme?.colors?.card,
+                  borderColor: editingTheme.colors?.border || currentTheme?.colors?.border,
+                  color: editingTheme.colors?.foreground || currentTheme?.colors?.foreground,
                 }}
               >
                 <h5
                   className="font-semibold mb-2"
                   style={{
-                    color: editingTheme.colors?.primary || currentTheme.colors.primary,
+                    color: editingTheme.colors?.primary || currentTheme?.colors?.primary,
                   }}
                 >
                   {editingTheme.branding?.businessName || "Business Name"}
@@ -285,7 +287,7 @@ export function ThemeEditor() {
                 <p
                   className="text-sm mb-3"
                   style={{
-                    color: editingTheme.colors?.muted || currentTheme.colors.muted,
+                    color: editingTheme.colors?.muted || currentTheme?.colors?.muted,
                   }}
                 >
                   {editingTheme.branding?.tagline || "Business tagline"}
@@ -293,7 +295,7 @@ export function ThemeEditor() {
                 <Button
                   size="sm"
                   style={{
-                    backgroundColor: editingTheme.colors?.accent || currentTheme.colors.accent,
+                    backgroundColor: editingTheme.colors?.accent || currentTheme?.colors?.accent,
                     color: "white",
                   }}
                 >

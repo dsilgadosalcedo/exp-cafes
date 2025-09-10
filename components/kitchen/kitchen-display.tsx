@@ -10,6 +10,13 @@ import { useState, useEffect } from "react"
 import { formatDistanceToNow } from "date-fns"
 
 const statusConfig = {
+  draft: {
+    label: "Draft",
+    color: "bg-gray-400",
+    textColor: "text-gray-600",
+    bgColor: "bg-gray-25",
+    icon: Clock,
+  },
   pending: {
     label: "New Order",
     color: "bg-blue-500",
@@ -71,6 +78,8 @@ export function KitchenDisplay() {
 
   const getNextStatus = (currentStatus: Order["status"]): Order["status"] | null => {
     switch (currentStatus) {
+      case "draft":
+        return "pending"
       case "pending":
         return "preparing"
       case "preparing":

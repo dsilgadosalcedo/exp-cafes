@@ -16,7 +16,7 @@ export function NavBar() {
     <nav className="bg-card border-b border-border p-4">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <h1 className="font-heading text-xl font-bold text-foreground">{currentTheme.branding.businessName}</h1>
+          <h1 className="font-heading text-xl font-bold text-foreground">{currentTheme?.branding?.businessName || "Cafe POS"}</h1>
           {isPreviewMode && <Badge className="bg-orange-500 text-white">Preview Mode</Badge>}
           <OfflineIndicator />
         </div>

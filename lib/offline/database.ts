@@ -1,5 +1,5 @@
 import Dexie, { type Table } from "dexie"
-import type { Order, MenuItem, InventoryItem, Staff } from "../types"
+import type { Order, MenuItem, InventoryItem, StaffMember } from "../types"
 
 export interface SyncQueue {
   id?: number
@@ -14,7 +14,7 @@ export class OfflineDatabase extends Dexie {
   orders!: Table<Order>
   menuItems!: Table<MenuItem>
   inventory!: Table<InventoryItem>
-  staff!: Table<Staff>
+  staff!: Table<StaffMember>
   syncQueue!: Table<SyncQueue>
 
   constructor() {

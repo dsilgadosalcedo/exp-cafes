@@ -102,13 +102,11 @@ export function PosLayout() {
     const total = subtotal + tax
 
     const orderData: Omit<Order, "id" | "createdAt"> = {
-      orderNumber: `ORD-${Date.now()}`,
       items: currentOrder,
       subtotal,
       tax,
       total,
       status: "pending",
-      timestamp: new Date().toISOString(),
     }
 
     try {
@@ -119,8 +117,8 @@ export function PosLayout() {
         // Save offline and queue for sync
         const offlineOrder: Order = {
           ...orderData,
-          id: Date.now(), // Temporary ID for offline
-          createdAt: new Date().toISOString(),
+          id: Date.now().toString(), // Temporary ID for offline
+          createdAt: new Date(),
         }
         await offlineStorage.saveOrder(offlineOrder)
       }
@@ -133,8 +131,8 @@ export function PosLayout() {
       if (isOnline) {
         const offlineOrder: Order = {
           ...orderData,
-          id: Date.now(),
-          createdAt: new Date().toISOString(),
+          id: Date.now().toString(),
+          createdAt: new Date(),
         }
         await offlineStorage.saveOrder(offlineOrder)
         setCurrentOrder([])

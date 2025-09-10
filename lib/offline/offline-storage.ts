@@ -45,7 +45,7 @@ export class OfflineStorage {
     const item = await db.inventory.get(itemId)
     if (item) {
       item.currentStock = newStock
-      item.lastUpdated = new Date().toISOString()
+      item.lastRestocked = new Date()
       await this.saveInventoryItem(item)
     }
   }

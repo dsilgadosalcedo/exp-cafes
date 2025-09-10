@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { Package, AlertTriangle, TrendingDown, TrendingUp, RefreshCw, Search } from "lucide-react"
 import { useInventoryItems, useLowStockAlerts } from "@/lib/api/queries"
-import type { InventoryItem } from "@/lib/types"
+import type { InventoryItem, LowStockAlert } from "@/lib/types"
 import { useState } from "react"
 import { formatDistanceToNow } from "date-fns"
 import { StockAdjustmentDialog } from "./stock-adjustment-dialog"
@@ -125,7 +125,7 @@ export function InventoryDashboard() {
             <h3 className="font-semibold text-red-800">Stock Alerts</h3>
           </div>
           <div className="space-y-2">
-            {alerts.slice(0, 3).map((alert) => (
+            {alerts.slice(0, 3).map((alert: LowStockAlert) => (
               <div key={alert.id} className="flex justify-between items-center text-sm">
                 <span className="text-red-700">{alert.itemName}</span>
                 <Badge variant={alert.severity === "out" ? "destructive" : "secondary"}>

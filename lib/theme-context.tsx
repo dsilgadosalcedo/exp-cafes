@@ -9,7 +9,7 @@ interface ThemeContextType {
   availableThemes: CafeTheme[]
   setTheme: (themeId: string) => void
   updateTheme: (theme: Partial<CafeTheme>) => void
-  createTheme: (theme: Omit<CafeTheme, "id" | "createdAt" | "updatedAt">) => void
+  createTheme: (theme: Omit<CafeTheme, "id" | "createdAt" | "updatedAt">) => CafeTheme
   previewTheme: (theme: Partial<CafeTheme>) => void
   clearPreview: () => void
   isPreviewMode: boolean
